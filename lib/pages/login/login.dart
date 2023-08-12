@@ -41,7 +41,7 @@ class Login extends StatelessWidget {
             backgroundColor: Colors.white,
           ),
           body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Center(
               child: SingleChildScrollView(
                 child: Form(
@@ -52,7 +52,7 @@ class Login extends StatelessWidget {
                     children: [
                       Container(
                         height: 100,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           image: DecorationImage(
                             image: ExactAssetImage("assets/logo_MIN SANTE.png"),
                             fit: BoxFit.cover,

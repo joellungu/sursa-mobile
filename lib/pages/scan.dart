@@ -68,11 +68,11 @@ class _QRViewExampleState extends State<QRViewExample> {
           Expanded(
             flex: 1,
             child: Center(
-              child: (result != null)
-                  ? Text(
-                      'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-                  : Text('Scan a code'),
-            ),
+                // child: (result != null)
+                //     ? Text(
+                //         'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+                //     : Text('Scan a code'),
+                ),
           )
         ],
       ),
@@ -86,6 +86,9 @@ class _QRViewExampleState extends State<QRViewExample> {
         result = scanData;
         String data = "${result!.code}".split(",")[0].split(":")[1];
         print("La valeur vaut id: $data");
+        //
+        controller?.dispose();
+        Get.back();
         appController.scanner(data);
       });
     });

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:sursa_mobile/utils/app_controller.dart';
 import 'package:sursa_mobile/utils/requete.dart';
 
@@ -154,14 +155,16 @@ class Details extends StatelessWidget {
                                         ),
                                         Expanded(
                                           flex: 1,
-                                          child: Container(
-                                            height: Get.size.height / 2,
+                                          child: SizedBox(
+                                            height: Get.size.height / 1.5,
                                             width: Get.size.width / 1.3,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                    "${Requete.url}/img/avatar/${infos!['id']}.jpg"),
+                                            child: PhotoView(
+                                              backgroundDecoration:
+                                                  BoxDecoration(
+                                                color: Colors.transparent,
                                               ),
+                                              imageProvider: NetworkImage(
+                                                  "${Requete.url}/img/avatar/${infos!['id']}.jpg"),
                                             ),
                                           ),
                                         )
@@ -232,10 +235,16 @@ class Details extends StatelessWidget {
                               "Sexe",
                               infos!['sexe'] == "M" ? 'Homme' : 'Femme',
                               Icons.category),
+                          champ("Taille", "${infos!['taille']}",
+                              Icons.airplane_ticket),
+                          champ("Poids", "${infos!['poids']}",
+                              Icons.airplane_ticket),
                           champ("Nationalité", "${infos!['nationalite']}",
                               Icons.language),
-                          champ("Pays d'origine", "${infos!['pays_origine']}",
-                              Icons.language),
+                          infos!['mvt'] != "Circulant"
+                              ? champ("Pays d'origine",
+                                  "${infos!['pays_origine']}", Icons.language)
+                              : Container(),
                           champ("Numéro passeport",
                               "${infos!['num_passeport']}", Icons.person),
 
@@ -243,12 +252,24 @@ class Details extends StatelessWidget {
                           champ("Numéro téléphone", "${infos!['telephone']}",
                               Icons.numbers),
 
+                          champ(
+                              "Date d'arrivée",
+                              "${infos!['date_arrivee'] ?? ''}",
+                              Icons.location_on),
+
                           infos!['mvt'] == "Entrant"
                               ? champ(
-                                  "Province destination",
-                                  "${infos!['province_dest'] ?? ''}",
-                                  Icons.calendar_today)
+                                  "Dernier pays visité",
+                                  "${infos!['pays_visite'] ?? ''}",
+                                  Icons.location_on)
                               : Container(),
+
+                          // infos!['mvt'] == "Entrant"
+                          //     ? champ(
+                          //         "Province destination",
+                          //         "${infos!['province_dest'] ?? ''}",
+                          //         Icons.calendar_today)
+                          //     : Container(),
 
                           infos!['mvt'] == "Sortant"
                               ? champ(
@@ -270,8 +291,15 @@ class Details extends StatelessWidget {
                                   "${infos!['province_actuel'] ?? ''}",
                                   Icons.calendar_today)
                               : Container(),
-
                           infos!['mvt'] == "Circulant"
+                              ? champ(
+                                  "Ville destination",
+                                  "${infos!['ville_destination'] ?? ''}",
+                                  Icons.calendar_today)
+                              : Container(),
+
+                          infos!['mvt'] == "Circulant" ||
+                                  infos!['mvt'] == "Entrant"
                               ? champ(
                                   "Province destination",
                                   "${infos!['province_dest'] ?? ''}",
@@ -280,30 +308,36 @@ class Details extends StatelessWidget {
 
                           infos!['mvt'] == "Circulant"
                               ? champ(
-                                  "Ville de destination",
+                                  "Ville de actuelle",
                                   "${infos!['ville_dest'] ?? ''}",
                                   Icons.calendar_today)
                               : Container(),
 
                           champ("Date d'enregistrement",
                               "${infos!['date_creat']}", Icons.calendar_today),
-                          champ("Compagnie aérienne", "${infos!['compagnie']}",
+                          champ(
+                              infos!['voie_transport'] == "Voie terrestre"
+                                  ? "Compagnie routière"
+                                  : infos!['voie_transport'] == "Voie maritime"
+                                      ? "Compagnie maritime"
+                                      : "Compagnie aérienne",
+                              "${infos!['compagnie']}",
                               Icons.airplane_ticket),
-                          //champ(
-                          //"Mouvement", "${infos!['mvt']}", Icons.airplane_ticket),
+
                           champ("Numéro de vol", "${infos!['num_vol']}",
                               Icons.airplane_ticket),
                           champ("Numéro de siège", "${infos!['num_siege']}",
                               Icons.airplane_ticket),
-                          champ("Ville de destination",
-                              "${infos!['destination']}", Icons.location_on),
-                          champ("Pays visités ", "${infos!['pays_visite']}",
-                              Icons.location_on),
-                          champ(
-                              "Température corporelle",
-                              infos!['fievre'] == 1 ? 'Oui' : 'Non',
-                              Icons.thermostat),
-                          champ("Maux", "${infos!['nom']}", Icons.sick),
+
+                          // champ("Ville de destination",
+                          //     "${infos!['destination']}", Icons.location_on),
+
+                          // champ(
+                          //     "Température corporelle",
+                          //     infos!['fievre'] == 1 ? 'Oui' : 'Non',
+                          //     Icons.thermostat),
+                          // champ("Maux", "${infos!['nom']}", Icons.sick),
+
                           champ("Fièvre", infos!['fievre'] == 1 ? 'Oui' : 'Non',
                               Icons.sick),
                           champ(
@@ -311,12 +345,17 @@ class Details extends StatelessWidget {
                               infos!['sensation_fievre'] == 1 ? 'Oui' : 'Non',
                               Icons.sick),
                           champ(
-                              "PCR Covid19 négatif",
+                              "PCR Covid19",
                               infos!['test_covid'] == 1 ? 'Oui' : 'Non',
                               Icons.coronavirus),
                           champ("Toux", infos!['toux'] == 1 ? 'Oui' : 'Non',
                               Icons.sick),
-                          champ("Symptomes", "${infos!['symptomes']}",
+
+                          champ(
+                              "Symptomes",
+                              infos!['symptomes'] == ''
+                                  ? 'RAS'
+                                  : '${infos!['symptomes']}',
                               Icons.sick),
                           champ(
                               "Difficulté à respirer ",
@@ -331,17 +370,18 @@ class Details extends StatelessWidget {
 
                           champ(
                               "Nom de la personne-ressource (le plus proche parent)",
-                              "${infos!['nom']}",
+                              "${infos!['personne_urgence']}",
                               Icons.person),
 
                           champ(
                               "Numéro de téléphone de la personne à contacter",
-                              "${infos!['nom']}",
+                              "${infos!['contact_urgence']}",
                               Icons.numbers),
-                          champ("Village/Numéro de maison/Hôtel",
-                              "${infos!['nom']}", Icons.hotel),
-                          champ("Sous-location/Domaine ", "${infos!['nom']}",
-                              Icons.hotel),
+                          // champ("Date d'enregistrement",
+                          //     "${infos!['date_creat']}", Icons.hotel),
+                          // champ("Sous-location/Domaine ", "${infos!['nom']}",
+                          //     Icons.hotel),
+
                           champ(
                               "Adresse ", "${infos!['adresse']}", Icons.hotel),
                           //champ("Adresse postale ", "${infos!['nom']}", Icons.hotel),
@@ -547,7 +587,7 @@ class Details extends StatelessWidget {
         ),
       ),
       subtitle: Text(
-        valeur,
+        valeur.toUpperCase(),
         style: const TextStyle(
           fontSize: 17,
           color: Colors.black,

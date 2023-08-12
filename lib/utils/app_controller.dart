@@ -51,8 +51,8 @@ class AppController extends GetxController {
           //
           //box.write("user", rep.body);
           Get.back();
-          Get.snackbar("Succès", "L'authentification éffectué !");
           Get.offAll(Accueil());
+          Get.snackbar("Succès", "L'authentification éffectué !");
         }
       } else {
         Get.back();
@@ -91,6 +91,14 @@ class AppController extends GetxController {
 
   //api/user/get?id=xxxxxxxx
   Future<void> scanner(String id) async {
+    //
+    Get.dialog(Container(
+      height: 40,
+      width: 40,
+      child: const CircularProgressIndicator(),
+      alignment: Alignment.center,
+    ));
+    //
     print(
         "rep:  https://www.sky-workspace.com/sursa/api/?_c=form&_a=get&id=$id");
     d.Response rep = await requete.getE("api/?_c=form&_a=get&id=$id");
