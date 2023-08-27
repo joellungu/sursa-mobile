@@ -356,9 +356,9 @@ class Details extends StatelessWidget {
                                                   : 'Femme',
                                               "ICON SURSA HD18"),
                                           champ("Taille", "${infos!['taille']}",
-                                              "ICON SURSA HD18"),
-                                          champ("Poids", "${infos!['poids']}",
                                               "ICON SURSA HD32"),
+                                          champ("Poids", "${infos!['poids']}",
+                                              "ICON SURSA HD31"),
                                           champ(
                                               "Nationalité",
                                               "${infos!['nationalite']}",
