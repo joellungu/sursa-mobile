@@ -10,7 +10,7 @@ import 'login_controller.dart';
 class MdpOublie extends StatelessWidget {
   //
   final formKey = GlobalKey<FormState>();
-  final numero = TextEditingController();
+  final email = TextEditingController();
   final mdp = TextEditingController();
   //
   RxBool vue = true.obs;
@@ -69,7 +69,7 @@ class MdpOublie extends StatelessWidget {
                       height: 50,
                     ),
                     TextFormField(
-                      controller: numero,
+                      controller: email,
                       validator: (e) {
                         if (e!.isEmpty) {
                           return "Veuilliez inserer votre email";
@@ -104,11 +104,11 @@ class MdpOublie extends StatelessWidget {
                           //   Get.back();
                           //   Get.off(Accueil());
                           // });
-                          Map e = {
-                            "pseudo": numero.text,
-                            "pwd": mdp.text,
-                          };
-                          appController.login(e);
+                          // Map e = {
+                          //   "pseudo": email.text,
+                          //   "pwd": mdp.text,
+                          // };
+                          appController.mdpOublier(email.text);
                           //loginController.deja.value = true;
                         }
                       },
@@ -128,12 +128,27 @@ class MdpOublie extends StatelessWidget {
                       child: Container(
                         alignment: Alignment.center,
                         width: double.maxFinite,
-                        child: Text("S'authentifier"),
+                        child: const Text("S'authentifier"),
                       ),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.amber,
+                    //     borderRadius: BorderRadius.circular(10.0),
+                    //   ),
+                    //   child: InputDecorator(
+                    //     decoration: InputDecoration(
+                    //       labelText: 'XP',
+                    //       border: OutlineInputBorder(
+                    //         borderRadius: BorderRadius.circular(10.0),
+                    //       ),
+                    //     ),
+                    //     child: Text('content goes here'),
+                    //   ),
+                    // )
                   ],
                 ),
                 //)

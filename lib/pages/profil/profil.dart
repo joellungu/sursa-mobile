@@ -20,8 +20,22 @@ class Profil extends StatefulWidget {
 
 class _Profil extends State<Profil> {
   //
+  RxBool arrierePlan = false.obs;
+  //
+  var box = GetStorage();
+  //
   AppController appController = Get.find();
   RxBool vuePwd = false.obs;
+  //
+  @override
+  void initState() {
+    //
+    arrierePlan.value = box.read("arrierePlan") ?? false;
+    //
+    super.initState();
+    //
+  }
+
   //
   @override
   Widget build(BuildContext context) {
@@ -69,7 +83,7 @@ class _Profil extends State<Profil> {
                   "Nom",
                 ),
                 subtitle: Text(
-                  "${widget.e!['pseudo']}",
+                  "${widget.e!['nom']}",
                 ),
                 // trailing: IconButton(
                 //   onPressed: () {
@@ -117,27 +131,67 @@ class _Profil extends State<Profil> {
                 title: Text("Post frontalier"),
                 subtitle: Text("${widget.e!['lib_poste']}"),
               ),
+              ListTile(
+                leading: IconButton(
+                  onPressed: () {
+                    //
+                    vuePwd.value = !vuePwd.value;
+                  },
+                  icon: Icon(Icons.remove_red_eye),
+                ),
+                title: Text("Mot de passe"),
+                subtitle: ElevatedButton(
+                  onPressed: () async {
+                    //
+                    Get.dialog(
+                      Container(
+                        height: 40,
+                        width: 40,
+                        alignment: Alignment.center,
+                        child: const CircularProgressIndicator(),
+                      ),
+                    );
+                    //
+                    appController.mdpOublier("${widget.e!['email']}");
+                  },
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(
+                      const Size(
+                        double.maxFinite,
+                        45,
+                      ),
+                    ),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    )),
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.red.shade900),
+                  ),
+                  child: const Text("Modifier"),
+                ),
+                // subtitle: vuePwd.value
+                //     ? Text(widget.e!["pwd"])
+                //     : const Text("************"),
+                // trailing: IconButton(
+                //   icon: Icon(Icons.edit),
+
+                //   onPressed: () {
+                //     var postnom = TextEditingController();
+                //     //
+                //     modifierInfo(widget.e!, context, postnom, "pwd");
+                //   },
+                // ),
+              ),
+
               Obx(
-                () => ListTile(
-                  leading: IconButton(
-                    onPressed: () {
-                      //
-                      vuePwd.value = !vuePwd.value;
-                    },
-                    icon: Icon(Icons.remove_red_eye),
-                  ),
-                  title: Text("Mot de passe"),
-                  subtitle: vuePwd.value
-                      ? Text(widget.e!["pwd"])
-                      : const Text("************"),
-                  trailing: IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () {
-                      var postnom = TextEditingController();
-                      //
-                      modifierInfo(widget.e!, context, postnom, "pwd");
-                    },
-                  ),
+                () => SwitchListTile(
+                  title: const Text("Arrière plan"),
+                  subtitle: const Text("Activer ou désactiver l'arrière plan"),
+                  value: arrierePlan.value,
+                  onChanged: (e) {
+                    arrierePlan.value = e;
+                    box.write("arrierePlan", arrierePlan.value);
+                  },
                 ),
               ),
             ],

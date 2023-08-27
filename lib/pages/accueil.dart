@@ -22,7 +22,7 @@ class _Accueil extends State<Accueil> {
   //
   @override
   void initState() {
-    // TODO: implement initState
+    //
     super.initState();
   }
 

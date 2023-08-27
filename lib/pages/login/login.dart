@@ -11,7 +11,7 @@ import 'mdp_oublie.dart';
 class Login extends StatelessWidget {
   //
   final formKey = GlobalKey<FormState>();
-  final numero = TextEditingController();
+  final email = TextEditingController();
   final mdp = TextEditingController();
   //
   RxBool vue = true.obs;
@@ -82,10 +82,10 @@ class Login extends StatelessWidget {
                         height: 70,
                       ),
                       TextFormField(
-                        controller: numero,
+                        controller: email,
                         validator: (e) {
                           if (e!.isEmpty) {
-                            return "Veuilliez inserer votre nom d'utilisateur ou votre numéro";
+                            return "Veuilliez inserer votre email";
                           }
                           return null;
                         },
@@ -94,8 +94,8 @@ class Login extends StatelessWidget {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          prefixIcon: const Icon(Icons.person),
-                          hintText: "Nom d'utilisateur",
+                          prefixIcon: const Icon(Icons.email),
+                          hintText: "Email",
                         ),
                       ),
                       const SizedBox(
@@ -151,7 +151,7 @@ class Login extends StatelessWidget {
                             //   Get.off(Accueil());
                             // });
                             Map e = {
-                              "pseudo": numero.text,
+                              "email": email.text,
                               "pwd": mdp.text,
                             };
                             appController.login(e);

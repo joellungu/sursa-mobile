@@ -18,10 +18,10 @@ class AppController extends GetxController {
   Future<void> login(Map e) async {
     //pseudo,pwd,profil, etat
     print(
-        "${Requete.url}///api/?_c=user&_a=login&pseudo=${e['pseudo']}&pwd=${e['pwd']}");
+        "${Requete.url}/api/?_c=user&_a=login&email=${e['email']}&pwd=${e['pwd']}&profil=agent");
     //
-    d.Response rep = await requete
-        .getE("/api/?_c=user&_a=login&pseudo=${e['pseudo']}&pwd=${e['pwd']}");
+    d.Response rep = await requete.getE(
+        "/api/?_c=user&_a=login&email=${e['email']}&pwd=${e['pwd']}&profil=agent");
     if (rep.statusCode == 200 || rep.statusCode == 201) {
       //
       print("rep: ${rep.data}");
@@ -52,7 +52,7 @@ class AppController extends GetxController {
           //box.write("user", rep.body);
           Get.back();
           Get.offAll(Accueil());
-          Get.snackbar("Succès", "L'authentification éffectué !");
+          //Get.snackbar("Succès", "L'authentification éffectué !");
         }
       } else {
         Get.back();
@@ -76,10 +76,10 @@ class AppController extends GetxController {
 
   //
   Future<void> miseAjour(Map e) async {
-    d.Response rep = await requete
-        .getE("/api/?_c=user&_a=update&pwd=${e['pwd']}&id=${e['id']}");
+    d.Response rep = await requete.getE(
+        "/api/?_c=user&_a=pwd&pwd=${e['pwd']}&confirm=${e['pwd']}&id=${e['id']}");
     if (rep.statusCode == 200 || rep.statusCode == 201) {
-      //box.write("user", rep.body);
+      print("user ${rep.data}");
       Get.back();
       Get.snackbar("Succès", "La mise à jour éffectué");
       Get.offAll(Login());
@@ -116,7 +116,43 @@ class AppController extends GetxController {
     }
   }
 
+//
   //
+  Future<List> getAgence() async {
+    d.Response rep = await requete.getE(
+      "/api/?_c=agence&_a=select",
+    );
+    if (rep.statusCode == 200 || rep.statusCode == 201) {
+      //
+      print("data  ${rep.data}");
+      return jsonDecode(rep.data);
+      //
+      //change(rep.data, status: RxStatus.success());
+    } else {
+      //
+      return [];
+      //change([], status: RxStatus.empty());
+    }
+  }
+
+  //
+  Future<List> getPosteFrontalier() async {
+    d.Response rep = await requete.getE(
+      "/api/?_c=poste&_a=select",
+    );
+    if (rep.statusCode == 200 || rep.statusCode == 201) {
+      //
+      print("data  ${rep.data}");
+      return jsonDecode(rep.data);
+      //
+      //change(rep.data, status: RxStatus.success());
+    } else {
+      //
+      return [];
+      //change([], status: RxStatus.empty());
+    }
+  }
+
   //
   Future<void> validation(
       String id, String id_user, String date_valid, String etat_valid) async {
@@ -142,4 +178,30 @@ class AppController extends GetxController {
       Get.snackbar("Erreur", "Un problème lors de la validation");
     }
   }
+
+  //
+  Future<void> mdpOublier(String email) async {
+    print("api/?_c=user&_a=forgot&email=$email");
+    //print(
+    //  "rep:  https://www.sky-workspace.com/sursa/api/?_c=form&_a=get&id=$id");
+    d.Response rep = await requete.getE(
+      "api/?_c=user&_a=forgot&email=$email",
+    );
+    if (rep.statusCode == 200 || rep.statusCode == 201) {
+      // print("rep: ${rep.statusCode} == $id == $id_user");
+      print("rep: ${rep.data}");
+
+      //box.write("user", rep.body);
+
+      Get.back();
+      Get.snackbar("Succès",
+          "Un email a été envoyé dans votre compte pour reeinitialiser votre mot de passe");
+      //Get.to(Details(jsonDecode(rep.data)));
+    } else {
+      print("rep: ${rep.data}");
+      //Get.back();
+      Get.snackbar("Erreur", "Un problème lors de la vérification");
+    }
+  }
+  //
 }
