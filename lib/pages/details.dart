@@ -358,7 +358,7 @@ class Details extends StatelessWidget {
                                           champ("Taille", "${infos!['taille']}",
                                               "ICON SURSA HD18"),
                                           champ("Poids", "${infos!['poids']}",
-                                              "ICON SURSA HD18"),
+                                              "ICON SURSA HD32"),
                                           champ(
                                               "Nationalité",
                                               "${infos!['nationalite']}",
@@ -372,7 +372,7 @@ class Details extends StatelessWidget {
                                           champ(
                                               "Numéro passeport",
                                               "${infos!['num_passeport']}",
-                                              "ICON SURSA HD24"),
+                                              "ICON SURSA HD30"),
 
                                           champ("Email", "${infos!['email']}",
                                               "ICON SURSA HD19"),
@@ -604,7 +604,7 @@ class Details extends StatelessWidget {
                                               infos!['assurance_maladie'] == 1
                                                   ? 'Oui'
                                                   : 'Non',
-                                              "ICON SURSA HD20"),
+                                              "ICON SURSA HD29"),
                                         ],
                                       ),
                                     ),

@@ -132,12 +132,9 @@ class _Profil extends State<Profil> {
                 subtitle: Text("${widget.e!['lib_poste']}"),
               ),
               ListTile(
-                leading: IconButton(
-                  onPressed: () {
-                    //
-                    vuePwd.value = !vuePwd.value;
-                  },
-                  icon: Icon(Icons.remove_red_eye),
+                leading: Icon(
+                  Icons.remove_red_eye,
+                  color: Colors.grey.shade500,
                 ),
                 title: Text("Mot de passe"),
                 subtitle: ElevatedButton(
