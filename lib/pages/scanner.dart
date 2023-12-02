@@ -40,7 +40,8 @@ class _Scanner extends State<Scanner> {
     //
     agent = box.read('user') ?? {};
     //
-    frontier = RxInt(agent['id_poste']);
+    frontier = RxInt(int.parse(agent['id_poste']));
+    agence = RxInt(int.parse(agent['id_ets']));
     //
   }
 
@@ -157,7 +158,8 @@ class _Scanner extends State<Scanner> {
                                       agences = ll.obs;
                                       Map e = {};
                                       ll.forEach((element) {
-                                        if (element['id'] == agence.value) {
+                                        if (element['id'] ==
+                                            "${agence.value}") {
                                           e = element;
                                         }
                                       });

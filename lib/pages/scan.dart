@@ -84,12 +84,13 @@ class _QRViewExampleState extends State<QRViewExample> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
-        String data = "${result!.code}".split(",")[0].split(":")[1];
-        print("La valeur vaut id: $data");
+        String code = result!.code!;
+        //String data = "${result!.code}".split(",")[0].split(":")[1];
+        print("La valeur vaut id: $code");
         //
         controller?.dispose();
         Get.back();
-        appController.scanner(data);
+        appController.scanner(code);
       });
     });
   }

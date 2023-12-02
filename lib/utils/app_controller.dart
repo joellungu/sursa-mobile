@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sursa_mobile/pages/accueil.dart';
 import 'package:sursa_mobile/pages/details.dart';
+import 'package:sursa_mobile/pages/login/changer_mdp.dart';
+import 'package:sursa_mobile/pages/login/code_envoyer.dart';
 import 'package:sursa_mobile/pages/login/login.dart';
 
 import 'requete.dart';
@@ -18,43 +20,58 @@ class AppController extends GetxController {
   Future<void> login(Map e) async {
     //pseudo,pwd,profil, etat
     print(
-        "${Requete.url}/api/?_c=user&_a=login&email=${e['email']}&pwd=${e['pwd']}&profil=agent");
+        "${Requete.url}user/login?email=${e['email']}&pwd=${e['pwd']}&profil=agent");
     //
-    d.Response rep = await requete.getE(
-        "/api/?_c=user&_a=login&email=${e['email']}&pwd=${e['pwd']}&profil=agent");
+    d.Response rep = await requete
+        .getE("user/login?email=${e['email']}&pwd=${e['pwd']}&profil=agent");
     if (rep.statusCode == 200 || rep.statusCode == 201) {
       //
       print("rep: ${rep.data}");
-      Map e = jsonDecode(rep.data);
-      if (e["statut"] != null) {
-        //
-        if (e["statut"] == "non actif") {
+      if (rep.data.isNotEmpty) {
+        Map e = jsonDecode(rep.data);
+        if (e["etat"] != null) {
           //
-          print(rep.data);
-          //
+          if (e["etat"] == "non actif") {
+            //
+            print(rep.data);
+            //
 
-          //
-          //box.write("user", rep.body);
+            //
+            //box.write("user", rep.body);
+            Get.back();
+            Get.snackbar(
+              "Compte",
+              "Votre compte n'est pas actif veuillez contacter votre administrateur",
+              backgroundColor: Colors.red.shade700,
+              colorText: Colors.white,
+            );
+          } else {
+            //
+            print(rep.data);
+            //
+            box.write("user", json.decode(rep.data));
+
+            //
+            //box.write("user", rep.body);
+            Get.back();
+            Get.offAll(Accueil());
+            //Get.snackbar("Succès", "L'authentification éffectué !");
+          }
+        } else {
           Get.back();
           Get.snackbar(
-            "Compte",
-            "Votre compte n'est pas actif veuillez contacter votre administrateur",
-            backgroundColor: Colors.red.shade700,
+            "Oups",
+            "Veuillez contacter votre administrateur. Compte non valide",
             colorText: Colors.white,
+            backgroundColor: Colors.red.shade900,
           );
-        } else {
-          //
-          print(rep.data);
-          //
-          box.write("user", json.decode(rep.data));
-
-          //
-          //box.write("user", rep.body);
-          Get.back();
-          Get.offAll(Accueil());
-          //Get.snackbar("Succès", "L'authentification éffectué !");
         }
+        //
       } else {
+        //
+        print(rep.statusCode);
+        print(rep.data);
+        //
         Get.back();
         Get.snackbar(
           "Oups",
@@ -63,21 +80,15 @@ class AppController extends GetxController {
           backgroundColor: Colors.red.shade900,
         );
       }
-      //
     } else {
-      //
-      print(rep.statusCode);
-      print(rep.data);
-      //
-      Get.back();
-      Get.snackbar("Erreur", "Un problème lors de la suppression");
+      Get.snackbar("Erreur", "Un problème lors de l'authentification");
     }
   }
 
   //
   Future<void> miseAjour(Map e) async {
-    d.Response rep = await requete.getE(
-        "/api/?_c=user&_a=pwd&pwd=${e['pwd']}&confirm=${e['pwd']}&id=${e['id']}");
+    d.Response rep = await requete
+        .getE("user/pwd?pwd=${e['pwd']}&confirm=${e['pwd']}&id=${e['id']}");
     if (rep.statusCode == 200 || rep.statusCode == 201) {
       print("user ${rep.data}");
       Get.back();
@@ -89,7 +100,7 @@ class AppController extends GetxController {
     }
   }
 
-  //api/user/get?id=xxxxxxxx
+  //user/get?id=xxxxxxxx
   Future<void> scanner(String id) async {
     //
     Get.dialog(Container(
@@ -99,16 +110,20 @@ class AppController extends GetxController {
       alignment: Alignment.center,
     ));
     //
-    print(
-        "rep:  https://www.sky-workspace.com/sursa/api/?_c=form&_a=get&id=$id");
-    d.Response rep = await requete.getE("api/?_c=form&_a=get&id=$id");
+    //print("rep:  https://www.sky-workspace.com/sursa/?_c=form&_a=get&id=$id");
+    d.Response rep = await requete.getE("voyage/scan?token=$id");
     if (rep.statusCode == 200 || rep.statusCode == 201) {
       print("rep: ${rep.data}");
 
       //box.write("user", rep.body);
       Get.back();
       //Get.snackbar("Succès", "La mise à jour éffectué");
-      Get.to(Details(jsonDecode(rep.data)));
+      var rr = jsonDecode(rep.data);
+      if (rr.runtimeType != List) {
+        Get.to(Details(jsonDecode(rep.data)));
+      } else {
+        Get.snackbar("Erreur", "reponse : $rr");
+      }
     } else {
       print("rep: ${rep.data}");
       Get.back();
@@ -120,7 +135,7 @@ class AppController extends GetxController {
   //
   Future<List> getAgence() async {
     d.Response rep = await requete.getE(
-      "/api/?_c=agence&_a=select",
+      "ets/select",
     );
     if (rep.statusCode == 200 || rep.statusCode == 201) {
       //
@@ -138,7 +153,7 @@ class AppController extends GetxController {
   //
   Future<List> getPosteFrontalier() async {
     d.Response rep = await requete.getE(
-      "/api/?_c=poste&_a=select",
+      "poste/select",
     );
     if (rep.statusCode == 200 || rep.statusCode == 201) {
       //
@@ -158,9 +173,9 @@ class AppController extends GetxController {
       String id, String id_user, String date_valid, String etat_valid) async {
     //print(form);
     //print(
-    //  "rep:  https://www.sky-workspace.com/sursa/api/?_c=form&_a=get&id=$id");
+    //  "rep:  https://www.sky-workspace.com/sursa/?_c=form&_a=get&id=$id");
     d.Response rep = await requete.getE(
-      "api/?_c=form&_a=update&id=$id&id_valid=$id_user&date_valid=$date_valid&etat_valid=$etat_valid",
+      "voyage/update?id=$id&id_valid=$id_user&etat_valid=$etat_valid",
     );
     if (rep.statusCode == 200 || rep.statusCode == 201) {
       print("rep: ${rep.statusCode} == $id == $id_user");
@@ -181,11 +196,72 @@ class AppController extends GetxController {
 
   //
   Future<void> mdpOublier(String email) async {
-    print("api/?_c=user&_a=forgot&email=$email");
+    print("user/forgot?email=$email");
     //print(
-    //  "rep:  https://www.sky-workspace.com/sursa/api/?_c=form&_a=get&id=$id");
+    //  "rep:  https://www.sky-workspace.com/sursa/?_c=form&_a=get&id=$id");
     d.Response rep = await requete.getE(
-      "api/?_c=user&_a=forgot&email=$email",
+      "user/forgot?email=$email",
+    );
+    if (rep.statusCode == 200 || rep.statusCode == 201) {
+      // print("rep: ${rep.statusCode} == $id == $id_user");
+      print("rep: ${rep.data}");
+
+      //box.write("user", rep.body);
+      //
+
+      Get.back();
+      Get.to(CodeEnvoyer(email));
+      //
+      //Get.snackbar("Succès",
+      //  "Code a été envoyé dans votre compte pour reeinitialiser votre mot de passe");
+      //Get.to(Details(jsonDecode(rep.data)));
+    } else {
+      print("rep: ${rep.data}");
+      Get.back();
+      Get.snackbar("Erreur", "Un problème lors de la vérification");
+    }
+  }
+
+  //
+  Future<void> testDeCode(String code, String email) async {
+    print("user/valide?email=$email&code=$code");
+    //print(
+    //  "rep:  https://www.sky-workspace.com/sursa/?_c=form&_a=get&id=$id");
+    d.Response rep = await requete.getE(
+      "user/validate?email=$email&code=$code",
+    );
+    if (rep.statusCode == 200 || rep.statusCode == 201) {
+      // print("rep: ${rep.statusCode} == $id == $id_user");
+      print("rep: ${rep.data}");
+      String token = rep.data;
+      //box.write("user", rep.body);
+      //
+      if (token.isNotEmpty) {
+        Get.back();
+        Get.to(ChangeCode(email, token));
+      } else {
+        Get.back();
+        Get.snackbar("Erreur", "Code expiré");
+      }
+
+      //
+      //Get.snackbar("Succès",
+      //  "Un email a été envoyé dans votre compte pour reeinitialiser votre mot de passe");
+      //Get.to(Details(jsonDecode(rep.data)));
+    } else {
+      print("rep: ${rep.data}");
+      Get.back();
+      Get.snackbar("Erreur", "Un problème lors de la vérification");
+    }
+  }
+
+  //
+  Future<void> mdpModifier(String token, String pwd) async {
+    print("user/unit?token=$token&pwd=$pwd");
+    //print(
+    //  "rep:  https://www.sky-workspace.com/sursa/?_c=form&_a=get&id=$id");
+    d.Response rep = await requete.getE(
+      "user/init?token=$token&pwd=$pwd",
     );
     if (rep.statusCode == 200 || rep.statusCode == 201) {
       // print("rep: ${rep.statusCode} == $id == $id_user");
@@ -194,9 +270,9 @@ class AppController extends GetxController {
       //box.write("user", rep.body);
 
       Get.back();
-      Get.snackbar("Succès",
-          "Un email a été envoyé dans votre compte pour reeinitialiser votre mot de passe");
-      //Get.to(Details(jsonDecode(rep.data)));
+      Get.snackbar(
+          "Succès", "Votre mot de passe a été reinitialisé avec succès");
+      Get.offAll(Login());
     } else {
       print("rep: ${rep.data}");
       //Get.back();

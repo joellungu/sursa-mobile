@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:sursa_mobile/pages/accueil.dart';
 import 'package:sursa_mobile/utils/app_controller.dart';
 
+import 'code_envoyer.dart';
 import 'login_controller.dart';
 import 'mdp_oublie.dart';
 
@@ -70,7 +71,7 @@ class Login extends StatelessWidget {
                       const Align(
                         alignment: Alignment.center,
                         child: Text(
-                          "Système de surveillance sanitaire des voyageurs entrant, sortant et circulant dans le sol Congolais",
+                          "Système de surveillance sanitaire des voyageurs entrant, sortant et circulant sur le sol Congolais",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 15,
@@ -183,12 +184,13 @@ class Login extends StatelessWidget {
                       ),
                       OutlinedButton(
                         onPressed: () {
-                          //
+                          //MdpOublie
+                          //CodeEnvoyer
                           Get.to(MdpOublie());
                         },
                         style: ButtonStyle(
                           fixedSize: MaterialStateProperty.all(
-                            Size(
+                            const Size(
                               double.maxFinite,
                               45,
                             ),

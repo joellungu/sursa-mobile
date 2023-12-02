@@ -7,11 +7,14 @@ import 'package:sursa_mobile/utils/app_controller.dart';
 
 import 'login_controller.dart';
 
-class MdpOublie extends StatelessWidget {
+class CodeEnvoyer extends StatelessWidget {
   //
   final formKey = GlobalKey<FormState>();
-  final email = TextEditingController();
+  final code = TextEditingController();
   final mdp = TextEditingController();
+  String email;
+  //
+  CodeEnvoyer(this.email);
   //
   RxBool vue = true.obs;
 
@@ -29,6 +32,7 @@ class MdpOublie extends StatelessWidget {
         bottom: false,
         child: Scaffold(
           backgroundColor: Colors.white,
+
           appBar: AppBar(
             centerTitle: true,
             title: const Text(
@@ -67,17 +71,13 @@ class MdpOublie extends StatelessWidget {
                     //   width: 300,
                     //   height: 300,
                     // ),
-                    const SizedBox(
-                      height: 70,
-                    ),
                     const Align(
                       alignment: Alignment.center,
                       child: Text(
-                        "Système de surveillance sanitaire des voyageurs entrant, sortant et circulant sur le sol Congolais",
+                        "Veuillez saisir le code envoyé dans votre email",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -85,20 +85,20 @@ class MdpOublie extends StatelessWidget {
                       height: 50,
                     ),
                     TextFormField(
-                      controller: email,
+                      controller: code,
                       validator: (e) {
                         if (e!.isEmpty) {
-                          return "Veuilliez inserer votre mail";
+                          return "Veuilliez le code";
                         }
                         return null;
                       },
                       decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(vertical: 5),
+                        contentPadding: EdgeInsets.symmetric(vertical: 5),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
                         prefixIcon: const Icon(Icons.email),
-                        hintText: "Saisissez votre adresse mail",
+                        hintText: "Saisissez le code",
                       ),
                     ),
                     const SizedBox(
@@ -109,12 +109,14 @@ class MdpOublie extends StatelessWidget {
                         if (formKey.currentState!.validate()) {
                           //Get.off(Accueil());
 
-                          Get.dialog(Container(
-                            height: 40,
-                            width: 40,
-                            child: const CircularProgressIndicator(),
-                            alignment: Alignment.center,
-                          ));
+                          Get.dialog(
+                            Container(
+                              height: 40,
+                              width: 40,
+                              alignment: Alignment.center,
+                              child: const CircularProgressIndicator(),
+                            ),
+                          );
 
                           // Timer(Duration(seconds: 3), () {
                           //   Get.back();
@@ -124,7 +126,7 @@ class MdpOublie extends StatelessWidget {
                           //   "pseudo": email.text,
                           //   "pwd": mdp.text,
                           // };
-                          appController.mdpOublier(email.text);
+                          appController.testDeCode(code.text, email);
                           //loginController.deja.value = true;
                         }
                       },

@@ -41,7 +41,7 @@ dependencies:
   dio:
   permission_handler: ^10.4.3
   #flutter_launcher_icons: ^0.13.1
-  flutter_launcher_icons: ^0.9.2
+  #flutter_launcher_icons: ^0.9.2
   photo_view: ^0.14.0
   blur: ^3.1.0
   flutter_svg: ^2.0.7
@@ -56,12 +56,13 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  flutter_launcher_icons: ^0.13.1
   
 
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/LOGO SURSA TTRANSPARENT.png"
+  image_path: "assets/LOGO SURSA APPLICATION MOBILE3.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -7,11 +7,15 @@ import 'package:sursa_mobile/utils/app_controller.dart';
 
 import 'login_controller.dart';
 
-class MdpOublie extends StatelessWidget {
+class ChangeCode extends StatelessWidget {
   //
   final formKey = GlobalKey<FormState>();
-  final email = TextEditingController();
+  final code = TextEditingController();
   final mdp = TextEditingController();
+  String email;
+  String token;
+  //
+  ChangeCode(this.email, this.token);
   //
   RxBool vue = true.obs;
 
@@ -67,17 +71,13 @@ class MdpOublie extends StatelessWidget {
                     //   width: 300,
                     //   height: 300,
                     // ),
-                    const SizedBox(
-                      height: 70,
-                    ),
                     const Align(
                       alignment: Alignment.center,
                       child: Text(
-                        "Système de surveillance sanitaire des voyageurs entrant, sortant et circulant sur le sol Congolais",
+                        "Veuillez saisire le code envoyé dans votre email",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -85,10 +85,10 @@ class MdpOublie extends StatelessWidget {
                       height: 50,
                     ),
                     TextFormField(
-                      controller: email,
+                      controller: code,
                       validator: (e) {
                         if (e!.isEmpty) {
-                          return "Veuilliez inserer votre mail";
+                          return "Saisissez nouveau mot de passe";
                         }
                         return null;
                       },
@@ -98,7 +98,7 @@ class MdpOublie extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         prefixIcon: const Icon(Icons.email),
-                        hintText: "Saisissez votre adresse mail",
+                        hintText: "Saisissez nouveau mot de passe",
                       ),
                     ),
                     const SizedBox(
@@ -109,12 +109,14 @@ class MdpOublie extends StatelessWidget {
                         if (formKey.currentState!.validate()) {
                           //Get.off(Accueil());
 
-                          Get.dialog(Container(
-                            height: 40,
-                            width: 40,
-                            child: const CircularProgressIndicator(),
-                            alignment: Alignment.center,
-                          ));
+                          Get.dialog(
+                            Container(
+                              height: 40,
+                              width: 40,
+                              alignment: Alignment.center,
+                              child: const CircularProgressIndicator(),
+                            ),
+                          );
 
                           // Timer(Duration(seconds: 3), () {
                           //   Get.back();
@@ -124,7 +126,7 @@ class MdpOublie extends StatelessWidget {
                           //   "pseudo": email.text,
                           //   "pwd": mdp.text,
                           // };
-                          appController.mdpOublier(email.text);
+                          appController.mdpModifier(token, code.text);
                           //loginController.deja.value = true;
                         }
                       },

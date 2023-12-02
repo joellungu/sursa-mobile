@@ -9,6 +9,9 @@ class Profil extends StatefulWidget {
   Profil() {
     var box = GetStorage();
     e = box.read("user") ?? {};
+    //
+
+    //
     print(e);
   }
   //
@@ -19,6 +22,14 @@ class Profil extends StatefulWidget {
 }
 
 class _Profil extends State<Profil> {
+  //
+  RxList l = [].obs;
+  //
+  RxInt frontier = RxInt(1);
+  //////
+  RxList agences = [].obs;
+  //
+  RxInt agence = 1.obs;
   //
   RxBool arrierePlan = false.obs;
   //
@@ -34,6 +45,8 @@ class _Profil extends State<Profil> {
     //
     super.initState();
     //
+    frontier = RxInt(int.parse(widget.e!['id_poste']));
+    agence = RxInt(int.parse(widget.e!['id_ets']));
   }
 
   //
@@ -96,18 +109,18 @@ class _Profil extends State<Profil> {
                 // ),
               ),
               ListTile(
-                leading: Icon(Icons.phone_android),
-                title: Text("Téléphone"),
+                leading: const Icon(Icons.phone_android),
+                title: const Text("Téléphone"),
                 subtitle: Text("${widget.e!['telephone']}"),
               ),
               ListTile(
-                leading: Icon(Icons.email),
-                title: Text("Email"),
+                leading: const Icon(Icons.email),
+                title: const Text("Email"),
                 subtitle: Text("${widget.e!['email']}"),
               ),
               ListTile(
-                leading: Icon(Icons.person),
-                title: Text("profil"),
+                leading: const Icon(Icons.person),
+                title: const Text("profil"),
                 subtitle: Text("${widget.e!['profil']}"),
               ),
               // ListTile(
@@ -122,63 +135,216 @@ class _Profil extends State<Profil> {
               //   ),
               // ),
               ListTile(
-                leading: Icon(Icons.business),
-                title: Text("agence"),
-                subtitle: Text("${widget.e!['lib_agence']}"),
+                leading: const Icon(Icons.business),
+                title: const Text("agence"),
+                subtitle: FutureBuilder(
+                  future: appController.getAgence(),
+                  builder: (c, t) {
+                    if (t.hasData) {
+                      //
+                      List ll = t.data as List;
+                      agences = ll.obs;
+                      Map e = {};
+                      ll.forEach((element) {
+                        if (element['id'] == "${agence.value}") {
+                          e = element;
+                        }
+                      });
+                      //print("la liste de trucs2: $l");
+                      return Container(
+                        alignment: Alignment.centerLeft,
+                        height: 48,
+                        child: Text(
+                          "${e['lib'] ?? ''}",
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      );
+                      //
+                      return Obx(
+                        () => DropdownButtonHideUnderline(
+                          child: DropdownButton<int>(
+                            isExpanded: true,
+                            onChanged: (c) {
+                              //
+                              agence.value = c as int;
+                            },
+                            value: frontier.value,
+                            items: List.generate(agences.length, (index) {
+                              Map e = agences[index];
+                              return DropdownMenuItem(
+                                value: index,
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text.rich(
+                                    TextSpan(
+                                      text: "${e['lib']}",
+                                      style: const TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      // children: [
+                                      //   TextSpan(
+                                      //     text:
+                                      //         "Province: ${e['province']}",
+                                      //     style: const TextStyle(
+                                      //         fontSize:
+                                      //             13,
+                                      //         fontWeight:
+                                      //             FontWeight
+                                      //                 .bold),
+                                      //   ),
+                                      // ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                      );
+                    } else if (t.hasError) {
+                      return Container();
+                    }
+                    return Container(
+                      height: 40,
+                      width: 40,
+                      alignment: Alignment.center,
+                      child: const CircularProgressIndicator(),
+                    );
+                  },
+                ),
               ),
               ListTile(
                 leading: Icon(Icons.airplane_ticket),
                 title: Text("Post frontalier"),
-                subtitle: Text("${widget.e!['lib_poste']}"),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.remove_red_eye,
-                  color: Colors.grey.shade500,
-                ),
-                title: Text("Mot de passe"),
-                subtitle: ElevatedButton(
-                  onPressed: () async {
-                    //
-                    Get.dialog(
-                      Container(
-                        height: 40,
-                        width: 40,
-                        alignment: Alignment.center,
-                        child: const CircularProgressIndicator(),
-                      ),
-                    );
-                    //
-                    appController.mdpOublier("${widget.e!['email']}");
-                  },
-                  style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(
-                      const Size(
-                        double.maxFinite,
-                        45,
-                      ),
-                    ),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    )),
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.red.shade900),
-                  ),
-                  child: const Text("Modifier"),
-                ),
-                // subtitle: vuePwd.value
-                //     ? Text(widget.e!["pwd"])
-                //     : const Text("************"),
-                // trailing: IconButton(
-                //   icon: Icon(Icons.edit),
+                subtitle: FutureBuilder(
+                  future: appController.getPosteFrontalier(),
+                  builder: (c, t) {
+                    if (t.hasData) {
+                      //
+                      List ll = t.data as List;
+                      l = ll.obs;
+                      //
+                      Map e = l[0];
+                      //
+                      print("la liste de trucs2: $l");
+                      //
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text.rich(
+                            TextSpan(
+                              text: "${e['lib']},\n",
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: "${e['province']}",
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      );
+                      // return Obx(
+                      //   () => DropdownButtonHideUnderline(
+                      //     child: DropdownButton<int>(
 
-                //   onPressed: () {
-                //     var postnom = TextEditingController();
-                //     //
-                //     modifierInfo(widget.e!, context, postnom, "pwd");
-                //   },
-                // ),
+                      //       onChanged: (c) {
+                      //         //
+                      //         int r = c as int;
+                      //         //
+                      //         frontier.value = l[r]['id'];
+                      //       },
+                      //       iconSize: 0,
+                      //       value: frontier.value,
+                      //       isExpanded: true,
+                      //       items: List.generate(l.length,
+                      //           (index) {
+                      //         Map e = l[index];
+                      //         return DropdownMenuItem(
+
+                      //           value: index,
+                      //           child: Padding(
+                      //             padding:
+                      //                 const EdgeInsets.all(5),
+                      //             child: ,
+                      //           ),
+                      //         );
+                      //       }),
+                      //     ),
+                      //   ),
+                      // );
+                    } else if (t.hasError) {
+                      return Container();
+                    }
+                    return Container(
+                      height: 40,
+                      width: 40,
+                      alignment: Alignment.center,
+                      child: const CircularProgressIndicator(),
+                    );
+                  },
+                ),
               ),
+              // ListTile(
+              //   leading: Icon(
+              //     Icons.remove_red_eye,
+              //     color: Colors.grey.shade500,
+              //   ),
+              //   title: Text("Mot de passe"),
+              //   subtitle: ElevatedButton(
+              //     onPressed: () async {
+              //       //
+              //       Get.dialog(
+              //         Container(
+              //           height: 40,
+              //           width: 40,
+              //           alignment: Alignment.center,
+              //           child: const CircularProgressIndicator(),
+              //         ),
+              //       );
+              //       //
+              //       appController.mdpModifier("${widget.e!['id']}");
+              //     },
+              //     style: ButtonStyle(
+              //       fixedSize: MaterialStateProperty.all(
+              //         const Size(
+              //           double.maxFinite,
+              //           45,
+              //         ),
+              //       ),
+              //       shape: MaterialStateProperty.all(RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(20),
+              //       )),
+              //       backgroundColor:
+              //           MaterialStateProperty.all(Colors.red.shade900),
+              //     ),
+              //     child: const Text("Modifier"),
+              //   ),
+              //   // subtitle: vuePwd.value
+              //   //     ? Text(widget.e!["pwd"])
+              //   //     : const Text("************"),
+              //   // trailing: IconButton(
+              //   //   icon: Icon(Icons.edit),
+
+              //   //   onPressed: () {
+              //   //     var postnom = TextEditingController();
+              //   //     //
+              //   //     modifierInfo(widget.e!, context, postnom, "pwd");
+              //   //   },
+              //   // ),
+              // ),
 
               Obx(
                 () => SwitchListTile(

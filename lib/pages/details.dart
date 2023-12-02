@@ -220,7 +220,7 @@ class Details extends StatelessWidget {
                                                           ),
                                                           imageProvider:
                                                               NetworkImage(
-                                                                  "${Requete.url}/img/avatar/${infos!['id']}.jpg"),
+                                                                  "https://sursa.cd/img/avatar/${infos!['photo']}"),
                                                         ),
                                                       ),
                                                     )
@@ -363,12 +363,12 @@ class Details extends StatelessWidget {
                                               "Nationalité",
                                               "${infos!['nationalite']}",
                                               "ICON SURSA HD23"),
-                                          infos!['mvt'] != "Circulant"
-                                              ? champ(
-                                                  "Pays d'origine",
-                                                  "${infos!['pays_origine']}",
-                                                  "ICON SURSA HD24")
-                                              : Container(),
+                                          // infos!['mvt'] != "Circulant"
+                                          //     ? champ(
+                                          //         "Pays d'origine",
+                                          //         "${infos!['pays_origine']}",
+                                          //         "ICON SURSA HD24")
+                                          //     : Container(),
                                           champ(
                                               "Numéro passeport",
                                               "${infos!['num_passeport']}",
@@ -428,12 +428,13 @@ class Details extends StatelessWidget {
 
                                           champ(
                                               "Date d'arrivée",
-                                              getDate(infos!['date_arrivee']),
+                                              getDate(infos!['date_voyage']),
                                               "ICON SURSA HD25"),
 
-                                          infos!['mvt'] == "Entrant"
+                                          infos!['mvt'].toLowerCase() ==
+                                                  "Entrant".toLowerCase()
                                               ? champ(
-                                                  "Dernier pays visité",
+                                                  "Pays de provenance",
                                                   "${infos!['pays_visite'] ?? ''}",
                                                   "ICON SURSA HD6")
                                               : Container(),
@@ -445,45 +446,61 @@ class Details extends StatelessWidget {
                                           //         Icons.calendar_today)
                                           //     : Container(),
 
-                                          infos!['mvt'] == "Sortant"
+                                          infos!['mvt'].toLowerCase() ==
+                                                  "Sortant".toLowerCase()
                                               ? champ(
                                                   "Province actuelle",
-                                                  "${infos!['province_actuel'] ?? ''}",
+                                                  "${infos!['province_actuelle'] ?? ''}",
                                                   "ICON SURSA HD6")
                                               : Container(),
 
-                                          infos!['mvt'] == "Sortant"
+                                          infos!['mvt'].toLowerCase() ==
+                                                  "Sortant".toLowerCase()
                                               ? champ(
                                                   "Pays destination",
-                                                  "${infos!['pays_dest'] ?? ''}",
+                                                  "${infos!['pays_destination'] ?? ''}",
                                                   "ICON SURSA HD6")
                                               : Container(),
 //////
-                                          infos!['mvt'] == "Circulant"
+                                          infos!['mvt'].toLowerCase() ==
+                                                  "Circulant".toLowerCase()
                                               ? champ(
                                                   "Province actuelle",
-                                                  "${infos!['province_actuel'] ?? ''}",
+                                                  "${infos!['province_actuelle'] ?? ''}",
                                                   "ICON SURSA HD6")
                                               : Container(),
-                                          infos!['mvt'] == "Circulant"
+                                          //
+                                          infos!['mvt'].toLowerCase() ==
+                                                      "Circulant"
+                                                          .toLowerCase() ||
+                                                  infos!['mvt'].toLowerCase() ==
+                                                      "Entrant".toLowerCase()
+                                              ? champ(
+                                                  "Province de destination",
+                                                  "${infos!['province_destination'] ?? ''}",
+                                                  "ICON SURSA HD5")
+                                              : Container(),
+                                          //
+                                          infos!['mvt'].toLowerCase() ==
+                                                  "Circulant".toLowerCase()
                                               ? champ(
                                                   "Ville destination",
                                                   "${infos!['ville_destination'] ?? ''}",
                                                   "ICON SURSA HD5")
                                               : Container(),
 
-                                          infos!['mvt'] == "Circulant" ||
-                                                  infos!['mvt'] == "Entrant"
+                                          // infos!['mvt'].toLowerCase() ==
+                                          //         "Circulant".toLowerCase()
+                                          //     ? champ(
+                                          //         "Ville actuelle",
+                                          //         "${infos!['ville_destination'] ?? ''}",
+                                          //         "ICON SURSA HD5")
+                                          //     : Container(),
+                                          infos!['mvt'].toLowerCase() ==
+                                                  "Entrant".toLowerCase()
                                               ? champ(
-                                                  "Province de destination",
-                                                  "${infos!['province_dest'] ?? ''}",
-                                                  "ICON SURSA HD5")
-                                              : Container(),
-
-                                          infos!['mvt'] == "Circulant"
-                                              ? champ(
-                                                  "Ville de actuelle",
-                                                  "${infos!['ville_dest'] ?? ''}",
+                                                  "Ville de destination",
+                                                  "${infos!['ville_destination'] ?? ''}",
                                                   "ICON SURSA HD5")
                                               : Container(),
 
@@ -506,22 +523,22 @@ class Details extends StatelessWidget {
                                           ),
 
                                           champ(
-                                              "Numéro de vol",
-                                              "${infos!['num_vol']}",
+                                              "N° Vol, Bus, Bateau ou autres",
+                                              "${infos!['n_transport']}",
                                               "ICON SURSA HD3"),
                                           champ(
-                                              "Numéro de siège",
-                                              "${infos!['num_siege']}",
+                                              "N° siège",
+                                              "${infos!['n_siege']}",
                                               "ICON SURSA HD4"),
                                           //
                                           champ(
                                               "Nom de la personne-ressource (le plus proche parent)",
-                                              "${infos!['personne_urgence']}",
+                                              "${infos!['nom_contact']}",
                                               "ICON SURSA HD16"),
 
                                           champ(
                                               "Numéro de téléphone de la personne à contacter en cas d'urgence",
-                                              "${infos!['contact_urgence']}",
+                                              "${infos!['telephone_contact']}",
                                               "ICON SURSA HD20"),
                                           // champ("Date d'enregistrement",
                                           //     "${infos!['date_creat']}", Icons.hotel),
@@ -588,9 +605,9 @@ class Details extends StatelessWidget {
                                               "ICON SURSA HD12"),
                                           champ(
                                               "Symptômes",
-                                              infos!['symptomes'] == ''
+                                              infos!['autres_symptomes'] == ''
                                                   ? 'RAS'
-                                                  : '${infos!['symptomes']}',
+                                                  : '${infos!['autres_symptomes']}',
                                               "ICON SURSA HD13"),
                                           champ(
                                               "Difficulté à respirer ",
@@ -673,13 +690,13 @@ class Details extends StatelessWidget {
                                                       infos!['date_valid'] =
                                                           "$dateTime";
                                                       infos!['etat_valid'] =
-                                                          "conforme";
+                                                          "1";
                                                       //
                                                       appController.validation(
                                                           "${infos!['id']}",
                                                           "${user['id']}",
                                                           "$dateTime",
-                                                          "conforme");
+                                                          "1");
                                                       //
                                                     },
                                                     style: ButtonStyle(
@@ -745,13 +762,13 @@ class Details extends StatelessWidget {
                                                       infos!['date_valid'] =
                                                           "$dateTime";
                                                       infos!['etat_valid'] =
-                                                          "non conforme";
+                                                          "0";
                                                       //
                                                       appController.validation(
                                                           "${infos!['id']}",
                                                           "${user['id']}",
                                                           "$dateTime",
-                                                          "non conforme");
+                                                          "0");
                                                       //
                                                       //
                                                     },
@@ -808,10 +825,9 @@ class Details extends StatelessWidget {
                                                           FontWeight.bold,
                                                     ),
                                                   ),
+                                                  //${infos!['etat_valid']}
                                                   TextSpan(
-                                                    text:
-                                                        "${infos!['etat_valid']}"
-                                                            .capitalize,
+                                                    text: "".capitalize,
                                                     style: TextStyle(
                                                       fontSize: 20,
                                                       fontWeight:
