@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:sursa_mobile_2/pages/scan.dart';
-import 'package:sursa_mobile_2/utils/app_controller.dart';
+import 'package:sursa_mobile/pages/scan.dart';
+import 'package:sursa_mobile/utils/app_controller.dart';
 
 import 'details.dart';
 

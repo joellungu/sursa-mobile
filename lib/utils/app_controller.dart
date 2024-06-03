@@ -3,11 +3,11 @@ import 'package:dio/dio.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:sursa_mobile_2/pages/accueil.dart';
-import 'package:sursa_mobile_2/pages/details.dart';
-import 'package:sursa_mobile_2/pages/login/changer_mdp.dart';
-import 'package:sursa_mobile_2/pages/login/code_envoyer.dart';
-import 'package:sursa_mobile_2/pages/login/login.dart';
+import 'package:sursa_mobile/pages/accueil.dart';
+import 'package:sursa_mobile/pages/details.dart';
+import 'package:sursa_mobile/pages/login/changer_mdp.dart';
+import 'package:sursa_mobile/pages/login/code_envoyer.dart';
+import 'package:sursa_mobile/pages/login/login.dart';
 
 import 'requete.dart';
 
