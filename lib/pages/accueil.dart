@@ -56,7 +56,7 @@ class _Accueil extends State<Accueil> {
               currentIndex: v.value,
               fixedColor: Colors.red.shade900,
               unselectedItemColor: Colors.grey.shade400,
-              selectedLabelStyle: TextStyle(
+              selectedLabelStyle: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
               ),

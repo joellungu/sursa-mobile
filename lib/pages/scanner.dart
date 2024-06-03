@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:sursa_mobile/pages/scan.dart';
-import 'package:sursa_mobile/utils/app_controller.dart';
+import 'package:sursa_mobile_2/pages/scan.dart';
+import 'package:sursa_mobile_2/utils/app_controller.dart';
 
 import 'details.dart';
 
@@ -40,8 +40,8 @@ class _Scanner extends State<Scanner> {
     //
     agent = box.read('user') ?? {};
     //
-    frontier = RxInt(int.parse(agent['id_poste']));
-    agence = RxInt(int.parse(agent['id_ets']));
+    frontier = RxInt(agent['id_poste']); //int.parse(
+    agence = RxInt(agent['id_ets']); //int.parse(
     //
   }
 
@@ -169,57 +169,57 @@ class _Scanner extends State<Scanner> {
                                         height: 48,
                                         child: Text(
                                           "${e['lib'] ?? ''}",
-                                          style: TextStyle(
-                                            fontSize: 25,
+                                          style: const TextStyle(
+                                            fontSize: 22,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       );
                                       //
-                                      return Obx(
-                                        () => DropdownButtonHideUnderline(
-                                          child: DropdownButton<int>(
-                                            isExpanded: true,
-                                            onChanged: (c) {
-                                              //
-                                              agence.value = c as int;
-                                            },
-                                            value: frontier.value,
-                                            items: List.generate(agences.length,
-                                                (index) {
-                                              Map e = agences[index];
-                                              return DropdownMenuItem(
-                                                value: index,
-                                                child: Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      text: "${e['lib']}",
-                                                      style: const TextStyle(
-                                                        fontSize: 13,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                      // children: [
-                                                      //   TextSpan(
-                                                      //     text:
-                                                      //         "Province: ${e['province']}",
-                                                      //     style: const TextStyle(
-                                                      //         fontSize:
-                                                      //             13,
-                                                      //         fontWeight:
-                                                      //             FontWeight
-                                                      //                 .bold),
-                                                      //   ),
-                                                      // ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            }),
-                                          ),
-                                        ),
-                                      );
+                                      // return Obx(
+                                      //   () => DropdownButtonHideUnderline(
+                                      //     child: DropdownButton<int>(
+                                      //       isExpanded: true,
+                                      //       onChanged: (c) {
+                                      //         //
+                                      //         agence.value = c as int;
+                                      //       },
+                                      //       value: frontier.value,
+                                      //       items: List.generate(agences.length,
+                                      //           (index) {
+                                      //         Map e = agences[index];
+                                      //         return DropdownMenuItem(
+                                      //           value: index,
+                                      //           child: Padding(
+                                      //             padding: EdgeInsets.all(10),
+                                      //             child: Text.rich(
+                                      //               TextSpan(
+                                      //                 text: "${e['lib']}",
+                                      //                 style: const TextStyle(
+                                      //                   fontSize: 13,
+                                      //                   fontWeight:
+                                      //                       FontWeight.bold,
+                                      //                 ),
+                                      //                 // children: [
+                                      //                 //   TextSpan(
+                                      //                 //     text:
+                                      //                 //         "Province: ${e['province']}",
+                                      //                 //     style: const TextStyle(
+                                      //                 //         fontSize:
+                                      //                 //             13,
+                                      //                 //         fontWeight:
+                                      //                 //             FontWeight
+                                      //                 //                 .bold),
+                                      //                 //   ),
+                                      //                 // ],
+                                      //               ),
+                                      //             ),
+                                      //           ),
+                                      //         );
+                                      //       }),
+                                      //     ),
+                                      //   ),
+                                      // );
                                     } else if (t.hasError) {
                                       return Container();
                                     }
@@ -301,14 +301,14 @@ class _Scanner extends State<Scanner> {
                                             TextSpan(
                                               text: "${e['lib']},\n",
                                               style: const TextStyle(
-                                                fontSize: 22,
+                                                fontSize: 20,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                               children: [
                                                 TextSpan(
                                                   text: "${e['province']}",
                                                   style: const TextStyle(
-                                                    fontSize: 22,
+                                                    fontSize: 20,
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ),
@@ -321,7 +321,6 @@ class _Scanner extends State<Scanner> {
                                       // return Obx(
                                       //   () => DropdownButtonHideUnderline(
                                       //     child: DropdownButton<int>(
-
                                       //       onChanged: (c) {
                                       //         //
                                       //         int r = c as int;
@@ -335,7 +334,6 @@ class _Scanner extends State<Scanner> {
                                       //           (index) {
                                       //         Map e = l[index];
                                       //         return DropdownMenuItem(
-
                                       //           value: index,
                                       //           child: Padding(
                                       //             padding:
@@ -640,11 +638,12 @@ class _Scanner extends State<Scanner> {
                     //
                     Get.to(QRViewExample());
                     //
-
-                    //String? barcodeScanRes =
+                    //appController.scannerTest();
+                    //
+                    // String? barcodeScanRes =
                     //  await FlutterBarcodeScanner.scanBarcode(
                     //    "red", "Quitter", true, ScanMode.QR);
-                    //Get.to(Details(barcodeScanRes));
+                    // Get.to(Details(barcodeScanRes));
                   },
                   style: ButtonStyle(
                     fixedSize: MaterialStateProperty.all(
@@ -661,7 +660,12 @@ class _Scanner extends State<Scanner> {
                     backgroundColor:
                         MaterialStateProperty.all(Colors.red.shade900),
                   ),
-                  child: const Text("Commencer le scanne"),
+                  child: const Text(
+                    "Commencer le scanne",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ),
             )

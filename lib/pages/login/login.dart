@@ -176,7 +176,12 @@ class Login extends StatelessWidget {
                         child: Container(
                           alignment: Alignment.center,
                           width: double.maxFinite,
-                          child: Text("S'authentifier"),
+                          child: const Text(
+                            "S'authentifier",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(

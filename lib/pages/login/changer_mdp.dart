@@ -1,10 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sursa_mobile/pages/accueil.dart';
 import 'package:sursa_mobile/utils/app_controller.dart';
-
 import 'login_controller.dart';
 
 class ChangeCode extends StatelessWidget {

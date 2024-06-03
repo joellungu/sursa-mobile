@@ -3,11 +3,11 @@ import 'package:dio/dio.dart' as d;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:sursa_mobile/pages/accueil.dart';
-import 'package:sursa_mobile/pages/details.dart';
-import 'package:sursa_mobile/pages/login/changer_mdp.dart';
-import 'package:sursa_mobile/pages/login/code_envoyer.dart';
-import 'package:sursa_mobile/pages/login/login.dart';
+import 'package:sursa_mobile_2/pages/accueil.dart';
+import 'package:sursa_mobile_2/pages/details.dart';
+import 'package:sursa_mobile_2/pages/login/changer_mdp.dart';
+import 'package:sursa_mobile_2/pages/login/code_envoyer.dart';
+import 'package:sursa_mobile_2/pages/login/login.dart';
 
 import 'requete.dart';
 
@@ -17,13 +17,32 @@ class AppController extends GetxController {
   //
   var box = GetStorage();
   //
+  //
+  Future<List> getPhotos(int id) async {
+    d.Response rep = await requete.getE(
+      "v-user/archive-photo?id=$id",
+    );
+    if (rep.statusCode == 200 || rep.statusCode == 201) {
+      //
+      print("data  ${rep.data}");
+      return jsonDecode(rep.data);
+      //api.sursa.cd/
+      //change(rep.data, status: RxStatus.success());
+    } else {
+      //
+      return [];
+      //change([], status: RxStatus.empty());
+    }
+  }
+
+  //
   Future<void> login(Map e) async {
     //pseudo,pwd,profil, etat
     print(
-        "${Requete.url}user/login?email=${e['email']}&pwd=${e['pwd']}&profil=agent");
+        "${Requete.url}user/login?email=${e['email']}&pwd=${e['pwd']}&profil=Agent");
     //
     d.Response rep = await requete
-        .getE("user/login?email=${e['email']}&pwd=${e['pwd']}&profil=agent");
+        .getE("user/login?email=${e['email']}&pwd=${e['pwd']}&profil=Agent");
     if (rep.statusCode == 200 || rep.statusCode == 201) {
       //
       print("rep: ${rep.data}");
@@ -103,15 +122,20 @@ class AppController extends GetxController {
   //user/get?id=xxxxxxxx
   Future<void> scanner(String id) async {
     //
-    Get.dialog(Container(
-      height: 40,
-      width: 40,
-      child: const CircularProgressIndicator(),
-      alignment: Alignment.center,
-    ));
+    Map user = box.read("user");
+    //
+    Get.dialog(
+      Container(
+        height: 40,
+        width: 40,
+        alignment: Alignment.center,
+        child: const CircularProgressIndicator(),
+      ),
+    );
     //
     //print("rep:  https://www.sky-workspace.com/sursa/?_c=form&_a=get&id=$id");
-    d.Response rep = await requete.getE("voyage/scan?token=$id");
+    d.Response rep =
+        await requete.getE("voyage/scan?id=${user['id']}&token=$id");
     if (rep.statusCode == 200 || rep.statusCode == 201) {
       print("rep: ${rep.data}");
 
@@ -120,6 +144,39 @@ class AppController extends GetxController {
       //Get.snackbar("Succès", "La mise à jour éffectué");
       var rr = jsonDecode(rep.data);
       if (rr.runtimeType != List) {
+        Get.to(Details(jsonDecode(rep.data)));
+      } else {
+        Get.snackbar("Erreur", "reponse : $rr");
+      }
+    } else {
+      print("rep: ${rep.data}");
+      Get.back();
+      Get.snackbar("Erreur", "Un problème lors de la suppression");
+    }
+  }
+
+  //
+  Future<void> scannerTest() async {
+    //
+    Get.dialog(
+      Container(
+        height: 40,
+        width: 40,
+        child: const CircularProgressIndicator(),
+        alignment: Alignment.center,
+      ),
+    );
+    //
+    //print("rep:  https://www.sky-workspace.com/sursa/?_c=form&_a=get&id=$id");
+    d.Response rep = await requete.getEE();
+    if (rep.statusCode == 200 || rep.statusCode == 201) {
+      print("rep: ${rep.data}");
+
+      //box.write("user", rep.body);
+      Get.back();
+      //Get.snackbar("Succès", "La mise à jour éffectué");
+      var rr = jsonDecode(rep.data);
+      if (rr.runtimeType != Map) {
         Get.to(Details(jsonDecode(rep.data)));
       } else {
         Get.snackbar("Erreur", "reponse : $rr");
