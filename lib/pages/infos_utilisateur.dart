@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:sursa_mobile/utils/app_controller.dart';
+import 'package:sursa_mobile/utils/requete.dart';
 
 class InfosUtilisateur extends StatefulWidget {
   Map infos;
@@ -32,6 +33,12 @@ class _InfosUtilisateur extends State<InfosUtilisateur> {
     super.initState();
     //
     infos = widget.infos;
+    //
+    print("::: d: ${infos['id_valid']}");
+    //
+    print("::: d: ${infos['etat_valid']}");
+    //
+    print("::: d: ${infos['date_valid']}");
   }
 
   @override
@@ -122,8 +129,9 @@ class _InfosUtilisateur extends State<InfosUtilisateur> {
                                           borderRadius:
                                               BorderRadius.circular(20),
                                         ),
+                                        //http://192.168.1.185/www/sursa
                                         imageProvider: NetworkImage(
-                                            "http://192.168.1.185/www/sursa/assets/img/avatar/${infos['photo']}"),
+                                            "${Requete.urlImage}/assets/img/avatar/${infos['photo']}"),
                                       ),
                                       // child: FutureBuilder(
                                       //   future: appController
@@ -560,9 +568,7 @@ class _InfosUtilisateur extends State<InfosUtilisateur> {
                                 infos!['etat_valid']
                      */
                     widget.conformite
-                        ? infos!['id_valid'] == null ||
-                                infos!['date_valid'] == null ||
-                                infos!['etat_valid'] == null
+                        ? infos['etat'] == null
                             ? Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 30,
@@ -704,10 +710,13 @@ class _InfosUtilisateur extends State<InfosUtilisateur> {
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.normal,
-                                        color: Colors.red.shade900),
+                                        color: infos['etat'] == 1
+                                            ? Colors.green.shade900
+                                            : Colors.red.shade900),
                                     children: [
-                                      const TextSpan(
-                                        text: "Formulaire déjà certifié\n",
+                                      TextSpan(
+                                        text:
+                                            "Pass ${infos['etat'] == 1 ? 'conforme' : 'non conforme'}\n",
                                         style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,

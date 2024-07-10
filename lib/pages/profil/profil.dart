@@ -45,8 +45,8 @@ class _Profil extends State<Profil> {
     //
     super.initState();
     //
-    frontier = RxInt(widget.e!['id_poste']);
-    agence = RxInt(widget.e!['id_ets']);
+    frontier.value = int.parse("${widget.e!['id_poste']}");
+    agence.value = int.parse("${widget.e!['id_ets']}");
   }
 
   //

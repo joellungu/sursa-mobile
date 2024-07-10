@@ -28,6 +28,8 @@ class Details extends StatelessWidget {
     //
     arrierePlan.value = box.read("arrierePlan") ?? false;
     //
+    print("conformite: ${infos!['conformite']}");
+    //
     print(
         "${arrierePlan.value} ---- ${infos!['id_valid']} =|= ${infos!['date_valid']} =|= ${infos!['etat_valid']} =|= ${infos!['mvt']}");
     // infos = {

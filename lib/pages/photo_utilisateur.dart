@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:sursa_mobile/utils/requete.dart';
 
 class PhotoUtilisateur extends StatelessWidget {
   //
@@ -28,18 +29,21 @@ class PhotoUtilisateur extends StatelessWidget {
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(20),
                     ),
+                    //urlImage
+                    //http://192.168.1.185/www/sursa
                     imageProvider: NetworkImage(
-                        "http://192.168.1.185/www/sursa/assets/img/avatar/${img}"),
+                        "${Requete.urlImage}/assets/img/avatar/${img}"),
                   ),
                 ),
               );
             },
             child: Container(
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: NetworkImage(
-                    "http://192.168.1.185/www/sursa/assets/img/avatar/${img}"),
-              )),
+                image: DecorationImage(
+                  image: NetworkImage(
+                      "${Requete.urlImage}/assets/img/avatar/${img}"),
+                ),
+              ),
             ),
           );
         }, //['photo']

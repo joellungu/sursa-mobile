@@ -39,9 +39,14 @@ class _Scanner extends State<Scanner> {
     super.initState();
     //
     agent = box.read('user') ?? {};
-    //
-    frontier = RxInt(agent['id_poste']); //int.parse(
-    agence = RxInt(agent['id_ets']); //int.parse(
+    /**
+     * agent['id_poste'].runtimeType == String
+        ? RxInt(agent['id_poste'])
+        : 
+     */
+
+    frontier.value = int.parse("${agent['id_poste']}"); //int.parse(
+    agence.value = int.parse("${agent['id_ets']}"); //int.parse(
     //
   }
 
@@ -149,87 +154,16 @@ class _Scanner extends State<Scanner> {
                                     //   color: Colors.black,
                                     // ),
                                     ),
-                                child: FutureBuilder(
-                                  future: appController.getAgence(),
-                                  builder: (c, t) {
-                                    if (t.hasData) {
-                                      //
-                                      List ll = t.data as List;
-                                      agences = ll.obs;
-                                      Map e = {};
-                                      ll.forEach((element) {
-                                        if (element['id'] ==
-                                            "${agence.value}") {
-                                          e = element;
-                                        }
-                                      });
-                                      //print("la liste de trucs2: $l");
-                                      return Container(
-                                        alignment: Alignment.center,
-                                        height: 48,
-                                        child: Text(
-                                          "${e['lib'] ?? ''}",
-                                          style: const TextStyle(
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      );
-                                      //
-                                      // return Obx(
-                                      //   () => DropdownButtonHideUnderline(
-                                      //     child: DropdownButton<int>(
-                                      //       isExpanded: true,
-                                      //       onChanged: (c) {
-                                      //         //
-                                      //         agence.value = c as int;
-                                      //       },
-                                      //       value: frontier.value,
-                                      //       items: List.generate(agences.length,
-                                      //           (index) {
-                                      //         Map e = agences[index];
-                                      //         return DropdownMenuItem(
-                                      //           value: index,
-                                      //           child: Padding(
-                                      //             padding: EdgeInsets.all(10),
-                                      //             child: Text.rich(
-                                      //               TextSpan(
-                                      //                 text: "${e['lib']}",
-                                      //                 style: const TextStyle(
-                                      //                   fontSize: 13,
-                                      //                   fontWeight:
-                                      //                       FontWeight.bold,
-                                      //                 ),
-                                      //                 // children: [
-                                      //                 //   TextSpan(
-                                      //                 //     text:
-                                      //                 //         "Province: ${e['province']}",
-                                      //                 //     style: const TextStyle(
-                                      //                 //         fontSize:
-                                      //                 //             13,
-                                      //                 //         fontWeight:
-                                      //                 //             FontWeight
-                                      //                 //                 .bold),
-                                      //                 //   ),
-                                      //                 // ],
-                                      //               ),
-                                      //             ),
-                                      //           ),
-                                      //         );
-                                      //       }),
-                                      //     ),
-                                      //   ),
-                                      // );
-                                    } else if (t.hasError) {
-                                      return Container();
-                                    }
-                                    return Container(
-                                      height: 40,
-                                      width: 40,
-                                      alignment: Alignment.center,
-                                      child: const CircularProgressIndicator(),
-                                    );
-                                  },
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "${agent['lib_ets'] ?? ''}",
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -281,80 +215,29 @@ class _Scanner extends State<Scanner> {
                                   //   color: Colors.black,
                                   // ),
                                 ),
-                                child: FutureBuilder(
-                                  future: appController.getPosteFrontalier(),
-                                  builder: (c, t) {
-                                    if (t.hasData) {
-                                      //
-                                      List ll = t.data as List;
-                                      l = ll.obs;
-                                      //
-                                      Map e = l[0];
-                                      //
-                                      print("la liste de trucs2: $l");
-                                      //
-                                      return Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text.rich(
+                                      TextSpan(
+                                        text: "${agent['lib_poste']},\n",
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                         children: [
-                                          Text.rich(
-                                            TextSpan(
-                                              text: "${e['lib']},\n",
-                                              style: const TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                              children: [
-                                                TextSpan(
-                                                  text: "${e['province']}",
-                                                  style: const TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
+                                          TextSpan(
+                                            text: "${agent['province']}",
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
                                             ),
-                                            textAlign: TextAlign.center,
                                           ),
                                         ],
-                                      );
-                                      // return Obx(
-                                      //   () => DropdownButtonHideUnderline(
-                                      //     child: DropdownButton<int>(
-                                      //       onChanged: (c) {
-                                      //         //
-                                      //         int r = c as int;
-                                      //         //
-                                      //         frontier.value = l[r]['id'];
-                                      //       },
-                                      //       iconSize: 0,
-                                      //       value: frontier.value,
-                                      //       isExpanded: true,
-                                      //       items: List.generate(l.length,
-                                      //           (index) {
-                                      //         Map e = l[index];
-                                      //         return DropdownMenuItem(
-                                      //           value: index,
-                                      //           child: Padding(
-                                      //             padding:
-                                      //                 const EdgeInsets.all(5),
-                                      //             child: ,
-                                      //           ),
-                                      //         );
-                                      //       }),
-                                      //     ),
-                                      //   ),
-                                      // );
-                                    } else if (t.hasError) {
-                                      return Container();
-                                    }
-                                    return Container(
-                                      height: 40,
-                                      width: 40,
-                                      alignment: Alignment.center,
-                                      child: const CircularProgressIndicator(),
-                                    );
-                                  },
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),

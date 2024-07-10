@@ -227,17 +227,18 @@ class AppController extends GetxController {
 
   //
   Future<void> validation(
-      String id, String id_user, String date_valid, String etat_valid) async {
+      String id, String id_user, String date_valid, String etat) async {
     //print(form);
     //print(
     //  "rep:  https://www.sky-workspace.com/sursa/?_c=form&_a=get&id=$id");
+    //id_valid=$id_user&
     d.Response rep = await requete.getE(
-      "voyage/update?id=$id&id_valid=$id_user&etat_valid=$etat_valid",
+      "voyage/update?id=$id&etat=$etat",
     );
     if (rep.statusCode == 200 || rep.statusCode == 201) {
       print("rep: ${rep.statusCode} == $id == $id_user");
       print("rep: ${rep.data}");
-
+      //
       //box.write("user", rep.body);
 
       Get.back();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class TargetUtilisateur extends StatelessWidget {
@@ -175,16 +176,11 @@ class TargetUtilisateur extends StatelessWidget {
       leading: Container(
         height: 50,
         width: 50,
-        decoration: svg
-            ? const BoxDecoration(color: Colors.transparent)
-            : BoxDecoration(
-                image: DecorationImage(
-                  image: ExactAssetImage("assets/$ic.png"),
-                  fit: BoxFit.contain,
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-        child: svg ? const Icon(Icons.abc) : Container(),
+        decoration: const BoxDecoration(color: Colors.transparent),
+        child: SvgPicture.asset(
+          "assets/MaterialSymbolsLightWarningOutlineRounded.svg",
+          semanticsLabel: 'Acme Logo',
+        ),
       ),
       title: Text(
         titre,
