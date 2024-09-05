@@ -45,8 +45,8 @@ class _Scanner extends State<Scanner> {
         : 
      */
 
-    frontier.value = int.parse("${agent['id_poste']}"); //int.parse(
-    agence.value = int.parse("${agent['id_ets']}"); //int.parse(
+    frontier.value = int.parse("${agent['id_poste'] ?? 0}"); //int.parse(
+    agence.value = int.parse("${agent['id_ets'] ?? 0}"); //int.parse(
     //
   }
 
@@ -192,7 +192,7 @@ class _Scanner extends State<Scanner> {
                             child: Align(
                               alignment: Alignment.center,
                               child: Text(
-                                "Poste frantalier",
+                                "Poste frontalier",
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontWeight: FontWeight.bold,

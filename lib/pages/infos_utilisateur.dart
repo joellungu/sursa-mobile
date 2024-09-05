@@ -331,15 +331,14 @@ class _InfosUtilisateur extends State<InfosUtilisateur> {
                           //         "${infos!['pays_origine']}",
                           //         "ICON SURSA HD24")
                           //     : Container(),
-                          champ("Numéro passeport",
-                              "${infos!['num_passeport']}", "ICON SURSA HD30"),
-
+                          champ("Numéro passeport", "${infos!['num_identite']}",
+                              "ICON SURSA HD30"),
+                          //
                           champ(
                               "Email", "${infos!['email']}", "ICON SURSA HD19"),
                           champ("Numéro téléphone", "${infos!['telephone']}",
                               "ICON SURSA HD20"),
                           //
-
                           champ("Adresse ", "${infos!['adresse']}",
                               "ICON SURSA HD20"),
                         ],
@@ -387,7 +386,7 @@ class _InfosUtilisateur extends State<InfosUtilisateur> {
                           infos!['mvt'].toLowerCase() == "Entrant".toLowerCase()
                               ? champ(
                                   "Pays de provenance",
-                                  "${infos!['pays_visite'] ?? ''}",
+                                  "${infos!['pays_provenance'] ?? ''}",
                                   "ICON SURSA HD6")
                               : Container(),
 

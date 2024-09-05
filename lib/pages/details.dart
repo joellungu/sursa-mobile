@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:blur/blur.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:get_storage/get_storage.dart';
@@ -9,6 +10,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:sursa_mobile/utils/app_controller.dart';
 import 'package:sursa_mobile/utils/requete.dart';
 
+import 'infos_charges.dart';
 import 'infos_utilisateur.dart';
 import 'photo_utilisateur.dart';
 import 'target_utilisateur.dart';
@@ -90,10 +92,15 @@ class Details extends StatelessWidget {
         right: false,
         bottom: false,
         child: DefaultTabController(
-          length: 3,
+          length: 4,
           child: Scaffold(
             appBar: AppBar(
-              title: const Text("Informations du passager"),
+              title: const Text(
+                "Informations du passager",
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
               backgroundColor: Colors.red.shade900,
             ),
             body: Stack(
@@ -143,6 +150,9 @@ class Details extends StatelessWidget {
                                   text: "Infos.",
                                 ),
                                 Tab(
+                                  text: "Charges",
+                                ),
+                                Tab(
                                   text: "Photos",
                                 ),
                                 Tab(
@@ -157,7 +167,8 @@ class Details extends StatelessWidget {
                               children: [
                                 InfosUtilisateur(
                                     infos!['info'], infos!['conformite']),
-                                PhotoUtilisateur(infos!['a_photo']),
+                                InfosCharges(infos!['pcharge']),
+                                PhotoUtilisateur(infos!['a_photo'] ?? []),
                                 TargetUtilisateur(infos!['target']),
                               ],
                             ),
