@@ -36,9 +36,9 @@ class _InfosUtilisateur extends State<InfosUtilisateur> {
     //
     print("::: d: ${infos['id_valid']}");
     //
-    print("::: d: ${infos['etat_valid']}");
+    print("::: d: ${infos['etat']}");
     //
-    print("::: d: ${infos['date_valid']}");
+    print("::: d: ${infos['date']}");
   }
 
   @override
@@ -665,7 +665,7 @@ class _InfosUtilisateur extends State<InfosUtilisateur> {
                                           infos!['id_valid'] =
                                               "${user['id']}"; //
                                           infos!['date_valid'] = "$dateTime";
-                                          infos!['etat_valid'] = "0";
+                                          //infos!['etat_valid'] = "0";
                                           //
                                           appController.validation(
                                               "${infos!['id']}",
@@ -709,13 +709,13 @@ class _InfosUtilisateur extends State<InfosUtilisateur> {
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.normal,
-                                        color: infos['etat'] == 1
+                                        color: infos['etat'] == '1'
                                             ? Colors.green.shade900
                                             : Colors.red.shade900),
                                     children: [
                                       TextSpan(
                                         text:
-                                            "Pass ${infos['etat'] == 1 ? 'conforme' : 'non conforme'}\n",
+                                            "Pass ${infos['etat'] == '1' ? 'conforme' : 'non conforme'}\n",
                                         style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,

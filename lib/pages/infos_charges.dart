@@ -45,10 +45,8 @@ class InfosCharges extends StatelessWidget {
                   champ("Nom", "${infos!['nom']}", "ICON SURSA HD15"),
                   champ("Postnom", "${infos!['postnom']}", "ICON SURSA HD15"),
                   champ("Prénom", "${infos!['prenom']}", "ICON SURSA HD15"),
-
                   champ("Sexe", infos!['sexe'] == "M" ? 'Homme' : 'Femme',
                       "ICON SURSA HD18"),
-
                   //champ("Taille", "${infos!['taille']}", "ICON SURSA HD32"),
                   //champ("Poids", "${infos!['poids']}", "ICON SURSA HD31"),
                   //champ("Nationalité", "${infos!['nationalite']}",
